@@ -2,12 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource()
+ *
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="Il existe déja un mail {{ value }}, veuillez saisir un autre mail."
+ * )
  * @method string getUserIdentifier()
  */
 class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
@@ -59,9 +67,9 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUsername()
     {
-        return $this->username;
+        return $this->email;
     }
 
     public function setUsername(string $username): self
@@ -123,6 +131,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
     {
 
     }
+
 
     public function eraseCredentials()
     {

@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
     {
 // === Products ===
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
             $product = new Product();
 
             $product->setName($this->productNames[random_int(0, 3)])
