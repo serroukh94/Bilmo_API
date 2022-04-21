@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @method string getUserIdentifier()
  */
-class User
+class User implements UserInterface, \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN= 'ROLE_ADMIN';
+    const DEFAULT_ROLE= 'ROLE_USER';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -41,6 +46,13 @@ class User
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="users")
      */
     private $client;
+
+    public function __construct()
+    {
+
+        $leRole[]=[self::DEFAULT_ROLE];
+        $this->roles = $leRole;
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +117,20 @@ class User
         $this->client = $client;
 
         return $this;
+    }
+
+    public function getSalt()
+    {
+
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
     }
 }
