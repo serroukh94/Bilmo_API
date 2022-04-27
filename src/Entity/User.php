@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -32,16 +33,34 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Username is required")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "Username must be at least {{ limit }} characters long",
+     *      maxMessage = "Username cannot be longer than {{ limit }} characters",
+     *      allowEmptyString = false
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Email is required")
+     * @Assert\Email(message = "The email is not a valid email.")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Password is required")
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 50,
+     *      minMessage = "Your password must be at least {{ limit }} characters long",
+     *      maxMessage = "Your password cannot be longer than {{ limit }} characters",
+     *      allowEmptyString = false
+     * )
      */
     private $password;
 
@@ -67,9 +86,9 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
         return $this->id;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
-        return $this->email;
+        return $this->username;
     }
 
     public function setUsername(string $username): self

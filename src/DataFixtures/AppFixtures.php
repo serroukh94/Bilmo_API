@@ -7,6 +7,7 @@ use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -15,17 +16,17 @@ class AppFixtures extends Fixture
     private $productNames = ['Pixel', 'Samsung', 'Nokia', 'Huawei'];
     private $Names = ['Orange', 'Bouygues', 'SFR', 'Free'];
 
-    private $passwordHasher;
+    private $passwordHarsher;
 
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserPasswordHasherInterface $passwordHarsher)
     {
         $this->faker=Factory::create("fr_FR");
-        $this->passwordHasher=$passwordHasher;
+        $this->passwordHarsher=$passwordHarsher;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
 
     public function load(ObjectManager $manager): void
@@ -38,14 +39,20 @@ class AppFixtures extends Fixture
             $product->setName($this->productNames[random_int(0, 3)])
                     ->setPrice(random_int(200, 1000 ))
                     ->setBrand($this->productNames[random_int(0, 3)] )
-                    ->setDescription('lorem ipsum dolor sit amet, consectetur adip');
+                    ->setDescription('lorem ipsum dolor sit amet, consecrate dip');
 
             $manager->persist($product);
-
+        }
 // === Clients ===
+        for ($i = 0; $i <= 3; $i++) {
             $client = new Client();
 
-            $client->setName($this->Names[random_int(0, 3)] );
+
+            $client->setName($this->Names[random_int(0, 3)] )
+                   ->setEmail(strtolower($client->getname()) . "@gmail.com")
+                   ->setPassword($this->passwordHarsher->hashPassword($client, 'admin'));
+
+
 
             $manager->persist($client);
         }
@@ -57,27 +64,15 @@ class AppFixtures extends Fixture
 
 
             $user->setUsername($this->faker->userName())
-                 ->setEmail(strtolower($user->getUsername()) . "@gmail.com")
-                 ->setPassword($this->passwordHasher->hashPassword($user,$user->getUsername()))
+                 ->setEmail($this->faker->email)
+                 ->setPassword($this->passwordHarsher->hashPassword($user,$user->getUsername()))
                  ->setClient($client);
-                $this->addReference("user". $i, $user);
+
 
 
             $manager->persist($user);
         }
 
-
-            $userAdmin = new User();
-            $rolesAdmin[]=User::ROLE_ADMIN;
-
-            $userAdmin->setUsername($this->faker->userName())
-                      ->setEmail(strtolower($userAdmin->getUsername()) . "@gmail.com")
-                      ->setPassword($this->passwordHasher->hashPassword($userAdmin,$userAdmin->getUsername()))
-                      ->setRoles($rolesAdmin)
-                      ->setClient($client);
-
-
-            $manager->persist($userAdmin);
 
         $manager->flush();
     }
