@@ -1,4 +1,7 @@
 # Bilmo_API
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5f3101a7076549a9bf6b03e6aeac95a3)](https://app.codacy.com/gh/serroukh94/Bilmo_API?utm_source=github.com&utm_medium=referral&utm_content=serroukh94/Bilmo_API&utm_campaign=Badge_Grade_Settings)
+
 Projet 7 du parcours développeur d'application PHP/Symfony chez OpenClassrooms : Créez un web service exposant une API
 
 Réalisé en PHP 7.2 et Symfony 5.4.7
