@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ApiResource(
+ *  attributes={"pagination_items_per_page"=5},
  *
  *  collectionOperations={
  *      "GET"={
@@ -25,9 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  *     itemOperations={
  *      "GET"={
- *          "path"="/product/{id}",
+ *          "path"="/products/{id}",
  *          "status"=200,
- *          "requirements"={"id"="\d+"},
  *          "normalization_context"={"groups"={"product:single"}},
  *
  *      },

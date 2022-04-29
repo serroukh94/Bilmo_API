@@ -7,11 +7,33 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"pagination_items_per_page"= 5},
+ *
+ *     collectionOperations={
+ *      "GET"={
+ *          "path"="/users",
+ *          "status"=200,
+ *          "normalization_context"={"groups"={"user_read"}}
+ *      },
+ *      "POST"
+ *
+ *     },
+ *     itemOperations={
+ *       "GET"={
+ *          "path"="/users/{id}",
+ *          "status"=200,
+ *          "normalization_context"={"groups"={"user_details_read"}}
+ *      },
+ *       "DELETE",
+ *       "PUT",
+ *     }
+ * )
  *
  * @UniqueEntity(
  *     fields={"email"},
@@ -26,10 +48,12 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @Groups({"user_details_read"})
      */
     private $id;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,6 +65,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      *      maxMessage = "Username cannot be longer than {{ limit }} characters",
      *      allowEmptyString = false
      * )
+     * @Groups({"user_read","user_details_read", "customer_details_read"})
      */
     private $username;
 
@@ -48,6 +73,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Email is required")
      * @Assert\Email(message = "The email is not a valid email.")
+     * @Groups({"user_details_read"})
      */
     private $email;
 
@@ -71,6 +97,7 @@ class User implements UserInterface, \Symfony\Component\Security\Core\User\Passw
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="users")
+     * @Groups({"user_details_read"})
      */
     private $client;
 

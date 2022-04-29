@@ -15,7 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+
  * @ApiResource(
+ *
  * collectionOperations={
  *      "GET"={
  *          "path"="/clients",
@@ -24,19 +26,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      },
  *      "POST"={
  *          "security"="is_granted('IS_AUTHENTICATED_FULLY')",
- *          "path"="/client",
+ *          "path"="/clients",
  *          "status"=200
  *      }
  *  },
  *
  *     itemOperations={
  *      "GET"={
- *          "path"="/client/{id}",
+ *          "path"="/clients/{id}",
  *          "status"=200,
  *          "normalization_context"={"groups"={"clients:single"}}
  *      },
  *      "DELETE"={
- *          "path"="/client/{id}",
+ *          "path"="/clients/{id}",
  *          "status"=204,
  *      }
  *  },
@@ -50,7 +52,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      * @Groups({"clients:single", "clients:list", "clients:write"})
      */

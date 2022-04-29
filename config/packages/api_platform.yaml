@@ -8,4 +8,4 @@ api_platform:
 
     collection:
         pagination:
-            items_per_page: 25
+            items_per_page: 20
