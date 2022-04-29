@@ -60,4 +60,4 @@ L’authentification nous permet de récupérer un token, qu’il faudra transme
 
 
 
-Félicitations le projet est installé correctement, vous pouvez désormais commencer à l'utiliser à votre guise !
+
