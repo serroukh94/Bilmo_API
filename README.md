@@ -7,7 +7,7 @@ Réalisé en PHP 7.2 et Symfony 5.4.7
 
 Installer l'application
 
-- Clonez le repository GitHub
+  - Clonez le repository GitHub
 
 - Configurez vos variables d'environnement dans le fichier .env :    
   
